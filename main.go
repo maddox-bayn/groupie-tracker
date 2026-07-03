@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -34,11 +35,11 @@ type Location struct {
 	Url  string `json:"url"`
 }
 
-func main() {
+func HandlChar(w http.ResponseWriter, r *http.Request) {
 	client := &http.Client{Timeout: 10 * time.Second}
 
 	// Requesting filtered data directly from the official API
-	resp, err := client.Get("https://rickandmortyapi.com/api/character/279")
+	resp, err := client.Get("https://rickandmortyapi.com/api/character/398")
 	if err != nil {
 		fmt.Printf("Network error: %v\n", err)
 		return
@@ -53,10 +54,24 @@ func main() {
 	var apiData Character
 	// Stream and decode the JSON body safely
 	if err := json.NewDecoder(resp.Body).Decode(&apiData); err != nil {
-		fmt.Printf("Decoding failed: %v\n", err)
+		http.Error(w, "Error decoding json Character data", http.StatusInternalServerError)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(apiData); err != nil {
+		http.Error(w, "Error Ecoding Character data", http.StatusInternalServerError)
+		return
+	}
+}
 
-	fmt.Println("--- Rick and Morty Characters Found ---")
-	fmt.Printf("ID: [%d]\nName is %s\nStatus: %s and Species: %s\nLocation: %s\n", apiData.ID, apiData.Name, apiData.Status, apiData.Species, apiData.Location.Name)
+func HomeHanler(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintf(w, "<div class=\"mr-2 text-xs inline-flex items-center font-bold leading-sm uppercase px-4 py-2 bg-blue-800 rounded\"><a href=\"/rickCharacter\">Character Information</a></div>")
+}
+func main() {
+	http.HandleFunc("/", HomeHanler)
+	http.HandleFunc("/rickCharacter", HandlChar)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+
 }
