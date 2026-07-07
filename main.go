@@ -2,36 +2,34 @@ package main
 
 import (
 	"fmt"
+	"groupie-tracker/control_utils"
 	cl "groupie-tracker/controllers"
+	"groupie-tracker/data"
 	"html/template"
 	"log"
 	"net/http"
 )
 
-const url = "https://groupietrackers.herokuapp.com/api"
 const port = ":8080"
 
-// func FetchApi() error {
-// 	Client := http.Client{Timeout: 10 * time.Second}
-// 	http.Get(url)
-// }
-
-func HandleIndex(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+func init() {
+	var err error
+	data.CombinedData, err = control_utils.FtchAllData()
+	if err != nil {
+		log.Println("Failed to fetch data from api")
 	}
-	cl.RendersTemplates(w, http.StatusOK, "index.html", nil)
+	fmt.Println("successful data fetch")
 }
-func RenderError(w http.ResponseWriter, code int, message string) {
-	cl.RendersTemplates(w, code, "error.html", nil)
-}
-func errorHandler(w http.ResponseWriter, r *http.Request) {
-	RenderError(w, http.StatusNotImplemented, "Error")
-}
+
 func main() {
+	if len(data.CombinedData.Date) == 0 {
+		fmt.Println("FtchAllData failed to fetch data at init call.... retrying call again")
+		var err error
+		data.CombinedData, err = control_utils.FtchAllData(); if err != nil {
+			log.Fatalf("Error fetching data:%v",err)
+		}
+	}
 	cl.Tmpl = template.Must(template.ParseGlob("templates/*.html"))
-	http.HandleFunc("GET /", HandleIndex)
-	http.HandleFunc("GET /error", errorHandler)
 	fmt.Println("Starting server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(port, nil))
 }
