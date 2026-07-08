@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"groupie-tracker/data"
+	"groupie-tracker/model"
 	"log"
 	"net/http"
 	"strconv"
@@ -33,6 +34,17 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	Id, err := strconv.Atoi(id)
 	if err != nil {
 		RendersTemplates(w, http.StatusBadRequest, "error.html", nil)
+	}
+	var artist model.Artist
+	for _, v := range data.CombinedData.Artists {
+		if v.ID == Id {
+			artist.ID = v.ID
+			artist.CreationDate = v.CreationDate
+			artist.Image = v.Image
+			artist.Members = v.Members
+			artist.Name = v.Name
+			artist.ty
+		}
 	}
 
 }
