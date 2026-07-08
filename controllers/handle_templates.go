@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -16,15 +17,12 @@ func ParseTemplates() {
 	}
 }
 
-func RendersTemplates(w http.ResponseWriter, statuscode int, tmpl string, data any) {
+func RendersTemplates(w http.ResponseWriter, statuscode int, tmpl string, data any) error {	
+	w.WriteHeader(statuscode)
 	template := Tmpl.Lookup(tmpl)
 	if template == nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
+		return fmt.Errorf("Erroo %s Not found", tmpl)
 	}
-	err := template.Execute(w, data)
-	if err != nil {
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return
-	}
+	return template.Execute(w, data)
 }

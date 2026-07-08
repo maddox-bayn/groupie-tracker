@@ -45,8 +45,8 @@ type Relations struct {
 }
 
 type CombinedData struct {
-	Artist   []Artist
-	Location []Location
-	Date     []Date
-	Relation []Relation
+	Artists   []Artist
+	Locations []Location
+	Dates     []Date
+	Relations []Relation
 }

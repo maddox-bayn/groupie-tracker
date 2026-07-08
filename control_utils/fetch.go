@@ -23,15 +23,15 @@ func FtchAllData() (model.CombinedData, error) {
 		err := Fetch(endpoint, dest)
 		if err != nil {
 			mux.Lock()
-			err = errors.Join(finalErr, fmt.Errorf("Error fetching data from %s: %v, ", endpoint, err))
+			finalErr = errors.Join(finalErr, fmt.Errorf("Error fetching data from %s: %v, ", endpoint, err))
 			mux.Unlock()
 		}
 	}
 
 	wg.Add(4)
-	go fetchdata("/artist", &data.Artists)
-	go fetchdata("/location", &data.Locations)
-	go fetchdata("/date", &data.Dates)
+	go fetchdata("/artists", &data.Artists)
+	go fetchdata("/locations", &data.Locations)
+	go fetchdata("/dates", &data.Dates)
 	go fetchdata("/relation", &data.Relations)
 	wg.Wait()
 
@@ -39,10 +39,10 @@ func FtchAllData() (model.CombinedData, error) {
 		return model.CombinedData{}, finalErr
 	}
 	return model.CombinedData{
-		Artist:   data.Artists,
-		Location: data.Locations.Index,
-		Date:     data.Dates.Index,
-		Relation: data.Relations.Index,
+		Artists:   data.Artists,
+		Locations: data.Locations.Index,
+		Dates:     data.Dates.Index,
+		Relations: data.Relations.Index,
 	}, nil
 }
 func Fetch(endpoint string, dest any) error {

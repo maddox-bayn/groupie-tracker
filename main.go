@@ -5,7 +5,6 @@ import (
 	"groupie-tracker/control_utils"
 	cl "groupie-tracker/controllers"
 	"groupie-tracker/data"
-	"html/template"
 	"log"
 	"net/http"
 )
@@ -18,18 +17,24 @@ func init() {
 	if err != nil {
 		log.Println("Failed to fetch data from api")
 	}
-	fmt.Println("successful data fetch")
+	if err == nil {
+		fmt.Println("successful data fetch")
+	}
+
 }
 
 func main() {
-	if len(data.CombinedData.Date) == 0 {
+	if len(data.CombinedData.Dates) == 0 {
 		fmt.Println("FtchAllData failed to fetch data at init call.... retrying call again")
 		var err error
-		data.CombinedData, err = control_utils.FtchAllData(); if err != nil {
-			log.Fatalf("Error fetching data:%v",err)
+		data.CombinedData, err = control_utils.FtchAllData()
+		if err != nil {
+			log.Fatalf("Error fetching data:%v", err)
 		}
 	}
-	cl.Tmpl = template.Must(template.ParseGlob("templates/*.html"))
+	cl.ParseTemplates()
+	http.HandleFunc("/", cl.HandleMain)
+	http.HandleFunc("/artist", cl.HandleArtist)
 	fmt.Println("Starting server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(port, nil))
 }
