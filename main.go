@@ -34,7 +34,7 @@ func main() {
 	}
 	cl.ParseTemplates()
 	http.HandleFunc("/", cl.HandleMain)
-	http.HandleFunc("/artist", cl.HandleArtist)
+	//http.HandleFunc("/artist", cl.HandleArtist)
 	fmt.Println("Starting server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(port, nil))
 }

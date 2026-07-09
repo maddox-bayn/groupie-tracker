@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"sync"
 )
-
+// function to 
 func FtchAllData() (model.CombinedData, error) {
 	var (
 		wg       sync.WaitGroup
@@ -44,6 +44,43 @@ func FtchAllData() (model.CombinedData, error) {
 		Dates:     data.Dates.Index,
 		Relations: data.Relations.Index,
 	}, nil
+}
+func FetchArtist(Id int) (model.Artist, error) {
+	var artist model.Artist
+	for _, v := range data.CombinedData.Artists {
+		if v.ID == Id {
+			artist.ID = v.ID
+			artist.CreationDate = v.CreationDate
+			artist.Image = v.Image
+			artist.Members = v.Members
+			artist.Name = v.Name
+		}
+	}
+
+	var locat model.Location
+	for _, loc := range data.Locations.Index {
+		if loc.ID == Id {
+			locat.Locations = loc.Locations
+		}
+	}
+	var date model.Date
+	for _, dat := range data.Dates.Index {
+		if dat.ID == Id {
+			date.ID = Id
+			date.Dates = dat.Dates
+		}
+	}
+	var relation model.Relation
+	for _, rela := range data.Relations.Index {
+		if rela.ID == Id {
+			relation.DateLocation = rela.DateLocation
+		}
+	}
+	artist.Date = date
+	artist.Location = locat
+	artist.Relation = relation
+
+	return artist, nil
 }
 func Fetch(endpoint string, dest any) error {
 	Urlresp, err := http.Get(config.Api_url + endpoint)

@@ -1,15 +1,15 @@
 package model
 
 type Artist struct {
-	ID              int      `json:"id"`
-	Image           string   `json:"image"`
-	Name            string   `json:"name"`
-	Members         []string `json:"members"`
-	CreationDate    int      `json:"creationDate"`
-	FirstAlbum      string   `json:"firstAlbum"`
-	LocationsUrl    string   `json:"locations"`
-	ConcertDatesUrl string   `json:"concertDates"`
-	RelationsUrl    string   `json:"relations"`
+	ID           int      `json:"id"`
+	Image        string   `json:"image"`
+	Name         string   `json:"name"`
+	Members      []string `json:"members"`
+	CreationDate int      `json:"creationDate"`
+	FirstAlbum   string   `json:"firstAlbum"`
+	Location     Location
+	Date         Date
+	Relation     Relation
 }
 
 type ArtistsPage struct {
@@ -28,7 +28,7 @@ type Locations struct {
 
 type Date struct {
 	ID   int      `json:"id"`
-	Data []string `json:"date"`
+	Dates []string `json:"date"`
 }
 
 type Dates struct {

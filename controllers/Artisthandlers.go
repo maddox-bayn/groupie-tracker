@@ -1,8 +1,9 @@
 package controllers
 
 import (
+	"fmt"
+	"groupie-tracker/control_utils"
 	"groupie-tracker/data"
-	"groupie-tracker/model"
 	"log"
 	"net/http"
 	"strconv"
@@ -35,15 +36,12 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		RendersTemplates(w, http.StatusBadRequest, "error.html", nil)
 	}
-	var artist model.Artist
-	for _, v := range data.CombinedData.Artists {
-		if v.ID == Id {
-			artist.ID = v.ID
-			artist.CreationDate = v.CreationDate
-			artist.Image = v.Image
-			artist.Members = v.Members
-			artist.Name = v.Name
-			artist.ty
+	artist, err := control_utils.FetchArtist(Id)
+	if err != nil {
+		err = RendersTemplates(w, http.StatusInternalServerError, "error.html", artist)
+		if err != nil {
+			http.Error(w, "Internal server Error", http.StatusInternalServerError)
+			fmt.Println("Error parsing template")
 		}
 	}
 

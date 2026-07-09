@@ -14,9 +14,9 @@
 <body>
     <h1>Groupie Tracker Artists</h1>
     <div class="grid">
-        {{range .Artists}}
+        {{range .Artist}}
         <div class="card">
-            <img src="{{.Artists.Image}}" alt="{{.Artists.Name}}">
+            <img src="{{.Artist}}" alt="{{.Artist.Name}}">
             <h3>{{.Name}}</h3>
             <p>First Album: {{.FirstAlbum}}</p>
             <a href="/artist?id={{.ID}}">View Extended Profile</a>
