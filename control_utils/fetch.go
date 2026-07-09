@@ -10,7 +10,8 @@ import (
 	"net/http"
 	"sync"
 )
-// function to 
+
+// function to
 func FtchAllData() (model.CombinedData, error) {
 	var (
 		wg       sync.WaitGroup
@@ -54,6 +55,7 @@ func FetchArtist(Id int) (model.Artist, error) {
 			artist.Image = v.Image
 			artist.Members = v.Members
 			artist.Name = v.Name
+			artist.FirstAlbum = v.FirstAlbum
 		}
 	}
 

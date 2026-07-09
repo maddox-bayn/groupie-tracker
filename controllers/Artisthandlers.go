@@ -44,5 +44,5 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error parsing template")
 		}
 	}
-
+	RendersTemplates(w, http.StatusOK, "artist.html", artist)
 }
