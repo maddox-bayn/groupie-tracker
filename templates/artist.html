@@ -88,6 +88,12 @@
             </section>
             
             <!-- We will add Locations and Dates here later -->
+            <section>
+                <h2>Concert Location and Dates</h2>
+                <ul>
+                    {{range location$ dates$ := .Relation.DateLocation}}
+                </ul>
+            </section>
         </main>
         
         <a href="/" class="back-link">← Back to Artists</a>

@@ -85,16 +85,16 @@ func FetchArtist(Id int) (model.Artist, error) {
 	return artist, nil
 }
 func Fetch(endpoint string, dest any) error {
-	Urlresp, err := http.Get(config.Api_url + endpoint)
+	urlResp, err := http.Get(config.Api_url + endpoint)
 	if err != nil {
 		return err
 	}
-	defer Urlresp.Body.Close()
+	defer urlResp.Body.Close()
 
-	if Urlresp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Api return status code %d", Urlresp.StatusCode)
+	if urlResp.StatusCode != http.StatusOK {
+		return fmt.Errorf("Api return status code %d", urlResp.StatusCode)
 	}
-	err = json.NewDecoder(Urlresp.Body).Decode(dest)
+	err = json.NewDecoder(urlResp.Body).Decode(dest)
 	if err != nil {
 		return err
 	}
