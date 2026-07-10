@@ -86,12 +86,24 @@
                     {{end}}
                 </ul>
             </section>
-            
-            <!-- We will add Locations and Dates here later -->
-            <section>
-                <h2>Concert Location and Dates</h2>
+            <!-- Locations and Dates -->
+            <section class="detail-card">
+                <h2>Concert Locations & Dates</h2>
                 <ul>
-                    {{range location$ dates$ := .Relation.DateLocation}}
+                    <!-- 1. Loop through the map to get each location and its list of dates -->
+                    {{range $location, $dates := .Relation.DateLocation}}
+                        <li>
+                            <!-- Display the location (the map key) -->
+                            <strong>{{$location}}</strong>
+                            
+                            <!-- 2. Loop through the slice of dates for this specific location -->
+                            <ul>
+                                {{range $dates}}
+                                    <li>{{.}}</li>
+                                {{end}}
+                            </ul>
+                        </li>
+                    {{end}}
                 </ul>
             </section>
         </main>

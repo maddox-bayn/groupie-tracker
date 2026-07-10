@@ -14,6 +14,7 @@ func ParseTemplates() {
 	Tmpl, err = template.ParseGlob("templates/*.html")
 	if err != nil {
 		log.Printf("error from parseGlob %s", err)
+		log.Fatal(err)
 	}
 }
 

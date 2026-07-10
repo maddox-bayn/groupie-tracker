@@ -35,6 +35,7 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		RendersTemplates(w, http.StatusBadRequest, "error.html", nil)
+		return
 	}
 	artist, err := control_utils.FetchArtist(id)
 	if err != nil {
@@ -44,9 +45,9 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 			fmt.Println("Error parsing template")
 		}
 	}
-	 err = RendersTemplates(w, http.StatusOK, "artist.html", artist)
-			if err != nil {
-			http.Error(w, "Internal server Error", http.StatusInternalServerError)
-			fmt.Println("Error parsing template")
-		}
+	err = RendersTemplates(w, http.StatusOK, "artist.html", artist)
+	if err != nil {
+		http.Error(w, "Internal server Error", http.StatusInternalServerError)
+		fmt.Println("Error parsing template")
+	}
 }

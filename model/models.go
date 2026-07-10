@@ -37,7 +37,7 @@ type Dates struct {
 
 type Relation struct {
 	ID           int                 `json:"id"`
-	DateLocation map[string][]string `json:"datelocation"`
+	DateLocation map[string][]string `json:"datesLocations"`
 }
 
 type Relations struct {
