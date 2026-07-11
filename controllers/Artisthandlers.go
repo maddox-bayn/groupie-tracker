@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"groupie-tracker/control_utils"
 	"groupie-tracker/data"
@@ -38,8 +39,8 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	artist, err := control_utils.FetchArtist(id)
-	if err != nil {
-		err = RendersTemplates(w, http.StatusInternalServerError, "error.html", artist)
+	if errors.Is(fmt.Errorf("404"), err) {
+		err = RendersTemplates(w, http.StatusNotFound, "error.html", artist)
 		if err != nil {
 			http.Error(w, "Internal server Error", http.StatusInternalServerError)
 			fmt.Println("Error parsing template")

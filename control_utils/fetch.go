@@ -24,7 +24,7 @@ func FtchAllData() (model.CombinedData, error) {
 		err := Fetch(endpoint, dest)
 		if err != nil {
 			mux.Lock()
-			finalErr = errors.Join(finalErr, fmt.Errorf("Error fetching data from %s: %v, ", endpoint, err))
+			finalErr = errors.Join(finalErr, fmt.Errorf("error fetching data from %s: %v, ", endpoint, err))
 			mux.Unlock()
 		}
 	}
@@ -57,6 +57,10 @@ func FetchArtist(Id int) (model.Artist, error) {
 			artist.Name = v.Name
 			artist.FirstAlbum = v.FirstAlbum
 		}
+	}
+
+	if len(data.Artists) == 0 {
+		return model.Artist{}, errors.New("404")
 	}
 
 	var locat model.Location
@@ -92,7 +96,7 @@ func Fetch(endpoint string, dest any) error {
 	defer urlResp.Body.Close()
 
 	if urlResp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Api return status code %d", urlResp.StatusCode)
+		return fmt.Errorf("api return status code %d", urlResp.StatusCode)
 	}
 	err = json.NewDecoder(urlResp.Body).Decode(dest)
 	if err != nil {
