@@ -39,13 +39,19 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	artist, err := control_utils.FetchArtist(id)
-	if errors.Is(fmt.Errorf("404"), err) {
+	if errors.Is(err, control_utils.Err404) {
 		err = RendersTemplates(w, http.StatusNotFound, "error.html", artist)
 		if err != nil {
 			http.Error(w, "Internal server Error", http.StatusInternalServerError)
 			fmt.Println("Error parsing template")
 		}
+		return
+	} else if err != nil {
+		http.Error(w, "Internal server Error", http.StatusInternalServerError)
+		fmt.Println("Error parsing template")
+		return
 	}
+
 	err = RendersTemplates(w, http.StatusOK, "artist.html", artist)
 	if err != nil {
 		http.Error(w, "Internal server Error", http.StatusInternalServerError)

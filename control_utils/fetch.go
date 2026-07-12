@@ -10,7 +10,7 @@ import (
 	"net/http"
 	"sync"
 )
-
+var Err404   = errors.New("404")
 // function to
 func FtchAllData() (model.CombinedData, error) {
 	var (
@@ -59,8 +59,8 @@ func FetchArtist(Id int) (model.Artist, error) {
 		}
 	}
 
-	if len(data.Artists) == 0 {
-		return model.Artist{}, errors.New("404")
+	if artist.ID == 0 {
+		return model.Artist{}, Err404
 	}
 
 	var locat model.Location
