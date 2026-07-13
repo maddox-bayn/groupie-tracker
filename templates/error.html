@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error {{.Status}} - Groupie Tracker</title>
+    <link rel="stylesheet" href="/static/css/artist.css">
     <link rel="stylesheet" href="/static/css/error.css">
-    <link rel="icon" type="image/svg+xml" href="static/css/favicon.svg" /> 
-    <title>Groupie-Tracker</title>
 </head>
 <body>
-    <div class="ErrorCon">
-        {{.Error}}
-        {{.Message}}
-        <a href="/" class="btn">Home</a>
+    <div class="error-container">
+        <h1 class="error-code">{{.Status}}</h1>
+        <h2 class="error-title">{{.Error}}</h2>
+        <p class="error-message">{{.Message}}</p>
+        <a href="/" class="home-button">Return to Home</a>
     </div>
 </body>
 </html>

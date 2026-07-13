@@ -1,0 +1,52 @@
+body { 
+    font-family: sans-serif; 
+    background: #121212; 
+    color: #fff; 
+    margin: 0; 
+    /* Use flexbox to perfectly center the error box on the screen */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+}
+
+.error-container { 
+    text-align: center; 
+    background: #1e1e1e; 
+    padding: 50px; 
+    border-radius: 12px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+    max-width: 500px; 
+    border-top: 4px solid #e22134; /* A bold red top border for errors */
+}
+
+.error-code { 
+    font-size: 6rem; 
+    margin: 0; 
+    color: #e22134; 
+}
+
+.error-title { 
+    font-size: 2rem; 
+    margin: 10px 0; 
+}
+
+.error-message { 
+    color: #b3b3b3; 
+    margin-bottom: 40px; 
+    line-height: 1.5; 
+}
+
+.home-button { 
+    background: #1db954; 
+    color: #fff; 
+    text-decoration: none; 
+    padding: 12px 24px; 
+    border-radius: 25px; 
+    font-weight: bold; 
+    transition: background 0.3s ease; 
+}
+
+.home-button:hover { 
+    background: #1ed760; 
+}

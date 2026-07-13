@@ -42,7 +42,7 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	artist, err := control_utils.FetchArtist(id)
 	if err != nil {
 		if errors.Is(err, control_utils.Err404) {
-			RenderError(w, http.StatusNotFound, "Artist Not Found")
+			RenderError(w, http.StatusNotFound, "Bad Request Artist Not Found")
 			return
 		} else {
 			RenderError(w, http.StatusInternalServerError, "Internal Server Error")
