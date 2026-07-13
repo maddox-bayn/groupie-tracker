@@ -7,6 +7,7 @@ import (
 	"groupie-tracker/data"
 	"log"
 	"net/http"
+	"strings"
 )
 
 const port = ":8080"
@@ -32,9 +33,19 @@ func main() {
 			log.Fatalf("Error fetching data:%v", err)
 		}
 	}
+	http.HandleFunc("/static/", HandleStatic)
 	cl.ParseTemplates()
 	http.HandleFunc("/", cl.HandleMain)
 	http.HandleFunc("/artist", cl.HandleArtist)
 	fmt.Println("Starting server on http://localhost:8080")
 	log.Fatal(http.ListenAndServe(port, nil))
+}
+
+
+func HandleStatic(w http.ResponseWriter, r *http.Request) {
+	if strings.HasPrefix(r.URL.Path, "/static") {
+		cl.RenderError(w, http.StatusUnauthorized, "the page does not exist.")
+	}
+	fileServer := http.FileServer(http.Dir("./static"))
+	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 }

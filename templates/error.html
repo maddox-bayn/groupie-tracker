@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/error.css">
+    <link rel="icon" type="image/svg+xml" href="static/css/favicon.svg" /> 
     <title>Groupie-Tracker</title>
 </head>
 <body>
-    <h2>Error</h2>
-    <a href="/" class="btn">Home</a>
+    <div class="ErrorCon">
+        {{.Error}}
+        {{.Message}}
+        <a href="/" class="btn">Home</a>
+    </div>
 </body>
 </html>

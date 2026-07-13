@@ -23,7 +23,7 @@ func RendersTemplates(w http.ResponseWriter, statuscode int, tmpl string, data a
 	template := Tmpl.Lookup(tmpl)
 	if template == nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
-		return fmt.Errorf("erroo %s Not found", tmpl)
+		return fmt.Errorf("error %s Not found", tmpl)
 	}
 	return template.Execute(w, data)
 }

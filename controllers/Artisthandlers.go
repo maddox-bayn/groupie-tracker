@@ -12,22 +12,23 @@ import (
 
 func HandleMain(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		RenderError(w, http.StatusNotFound, "Page Not Found")
 		return
 	}
 	if r.Method != http.MethodGet {
-		http.Error(w, "404 | Method Not Allowed", http.StatusMethodNotAllowed)
+		RenderError(w, http.StatusMethodNotAllowed, "Method Not Allowed")
 		return
 	}
 	err := RendersTemplates(w, http.StatusOK, "index.html", data.CombinedData)
 	if err != nil {
+		RenderError(w, http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 }
 
 func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/artist" {
-		http.NotFound(w, r)
+		RenderError(w, http.StatusNotFound, "Page Not Found")
 		log.Println("404 page not found =>", r.URL.Path, "❌")
 		return
 	}
@@ -35,26 +36,24 @@ func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	idStr := QueryParam.Get("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		RendersTemplates(w, http.StatusBadRequest, "error.html", nil)
+		RenderError(w, http.StatusBadRequest, "404 | Bad reuquest try something else")
 		return
 	}
 	artist, err := control_utils.FetchArtist(id)
-	if errors.Is(err, control_utils.Err404) {
-		err = RendersTemplates(w, http.StatusNotFound, "error.html", artist)
-		if err != nil {
-			http.Error(w, "Internal server Error", http.StatusInternalServerError)
+	if err != nil {
+		if errors.Is(err, control_utils.Err404) {
+			RenderError(w, http.StatusNotFound, "Artist Not Found")
+			return
+		} else {
+			RenderError(w, http.StatusInternalServerError, "Internal Server Error")
 			fmt.Println("Error parsing template")
 		}
-		return
-	} else if err != nil {
-		http.Error(w, "Internal server Error", http.StatusInternalServerError)
-		fmt.Println("Error parsing template")
 		return
 	}
 
 	err = RendersTemplates(w, http.StatusOK, "artist.html", artist)
 	if err != nil {
-		http.Error(w, "Internal server Error", http.StatusInternalServerError)
+		RenderError(w, http.StatusInternalServerError, "Internal Server Error")
 		fmt.Println("Error parsing template")
 	}
 }
