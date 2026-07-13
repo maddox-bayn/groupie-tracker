@@ -8,9 +8,12 @@ import (
 	"groupie-tracker/data"
 	"groupie-tracker/model"
 	"net/http"
+	"strings"
 	"sync"
 )
-var Err404   = errors.New("404")
+
+var Err404 = errors.New("404")
+
 // function to
 func FtchAllData() (model.CombinedData, error) {
 	var (
@@ -48,8 +51,10 @@ func FtchAllData() (model.CombinedData, error) {
 }
 func FetchArtist(Id int) (model.Artist, error) {
 	var artist model.Artist
+	found := false
 	for _, v := range data.CombinedData.Artists {
 		if v.ID == Id {
+			found = true
 			artist.ID = v.ID
 			artist.CreationDate = v.CreationDate
 			artist.Image = v.Image
@@ -59,7 +64,7 @@ func FetchArtist(Id int) (model.Artist, error) {
 		}
 	}
 
-	if artist.ID == 0 {
+	if !found {
 		return model.Artist{}, Err404
 	}
 
@@ -77,9 +82,16 @@ func FetchArtist(Id int) (model.Artist, error) {
 		}
 	}
 	var relation model.Relation
+	formattedRelations := make(map[string][]string)
 	for _, rela := range data.Relations.Index {
 		if rela.ID == Id {
-			relation.DateLocation = rela.DateLocation
+			for k, v := range rela.DateLocation {
+				k = strings.ReplaceAll(k, "_", " ")
+				k = strings.ReplaceAll(k, "-", " ")
+				k = Totitle(k)
+				formattedRelations[k] = v
+			}
+			relation.DateLocation = formattedRelations
 		}
 	}
 	artist.Date = date
@@ -87,6 +99,16 @@ func FetchArtist(Id int) (model.Artist, error) {
 	artist.Relation = relation
 
 	return artist, nil
+}
+func Totitle(key string) string {
+	words := strings.Fields(key)
+	for i, word := range words {
+		words[i] = strings.ToUpper(word[:1]) + word[1:]
+	}
+	keyForm := strings.Join(words, " ")
+	keyForm = strings.ReplaceAll(keyForm, "Usa", "USA")
+	keyForm = strings.ReplaceAll(keyForm, "Uk", "UK")
+	return keyForm
 }
 func Fetch(endpoint string, dest any) error {
 	urlResp, err := http.Get(config.Api_url + endpoint)
