@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"groupie-tracker/control_utils"
+	cu "groupie-tracker/control_utils"
 	cl "groupie-tracker/controllers"
 	"groupie-tracker/data"
 	"log"
@@ -13,7 +13,7 @@ const port = ":8080"
 
 func init() {
 	var err error
-	data.CombinedData, err = control_utils.FtchAllData()
+	data.CombinedData, err = cu.FtchAllData()
 	if err != nil {
 		log.Println("Failed to fetch data from api")
 	}
@@ -27,11 +27,12 @@ func main() {
 	if len(data.CombinedData.Dates) == 0 {
 		fmt.Println("FtchAllData failed to fetch data at init call.... retrying call again")
 		var err error
-		data.CombinedData, err = control_utils.FtchAllData()
+		data.CombinedData, err = cu.FtchAllData()
 		if err != nil {
 			log.Fatalf("Error fetching data:%v", err)
 		}
 	}
+	cu.BuildArtistIndex()
 	http.HandleFunc("/static/", cl.HandleStatic)
 	cl.ParseTemplates()
 	http.HandleFunc("/", cl.HandleMain)

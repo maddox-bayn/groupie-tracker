@@ -8,4 +8,5 @@ var (
 	Dates        model.Dates
 	Relations    model.Relations
 	CombinedData model.CombinedData
+	ArtistByID   map[int]model.Artist
 )
