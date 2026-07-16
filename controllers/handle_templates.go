@@ -19,11 +19,11 @@ func ParseTemplates() {
 }
 
 func RendersTemplates(w http.ResponseWriter, statuscode int, tmpl string, data any) error {
-	w.WriteHeader(statuscode)
 	template := Tmpl.Lookup(tmpl)
 	if template == nil {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return fmt.Errorf("error %s Not found", tmpl)
 	}
+	w.WriteHeader(statuscode)
 	return template.Execute(w, data)
 }

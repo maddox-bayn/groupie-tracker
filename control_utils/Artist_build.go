@@ -1,7 +1,6 @@
 package control_utils
 
 import (
-	"fmt"
 	"groupie-tracker/data"
 	"groupie-tracker/model"
 	"strings"
@@ -39,7 +38,6 @@ func BuildArtistIndex() {
 			k = Totitle(k)
 			formattedRelations[k] = v
 		}
-		fmt.Println(len(formattedRelations))
 		rel.DateLocation = formattedRelations
 		relationIndex[rel.ID] = rel
 	}
