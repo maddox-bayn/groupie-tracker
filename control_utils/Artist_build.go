@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// helper function to format atist details for readability
 func Totitle(key string) string {
 	words := strings.Fields(key)
 	for i, word := range words {
@@ -17,6 +18,8 @@ func Totitle(key string) string {
 	return keyForm
 }
 
+// BuildArtistIndex build each artist with all artist data into map stored with a key
+// BuildArtistIndex populate the global data.ArtistByID
 func BuildArtistIndex() {
 	data.ArtistByID = make(map[int]model.Artist)
 	locationIndex := make(map[int]model.Location)

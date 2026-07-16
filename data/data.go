@@ -2,6 +2,7 @@ package data
 
 import "groupie-tracker/model"
 
+// global state variable
 var (
 	Artists      []model.Artist
 	Locations    model.Locations

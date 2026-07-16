@@ -14,7 +14,7 @@ import (
 // global var used to identify 404 error
 var Err404 = errors.New("404")
 
-// function to
+// FtchAllData  all data form all api endpoint
 func FtchAllData() (model.CombinedData, error) {
 	var (
 		wg       sync.WaitGroup
@@ -22,6 +22,7 @@ func FtchAllData() (model.CombinedData, error) {
 		finalErr error
 	)
 
+	// helper function to fatch data cuncurrently 
 	fetchdata := func(endpoint string, dest any) {
 		defer wg.Done()
 		err := Fetch(endpoint, dest)
@@ -49,6 +50,8 @@ func FtchAllData() (model.CombinedData, error) {
 		Relations: data.Relations.Index,
 	}, nil
 }
+// FetchArtist return all artist detail using map look up 
+// if data is not present it returns error  404
 func FetchArtist(Id int) (model.Artist, error) {
 	artist, found := data.ArtistByID[Id]
 	if !found {
@@ -57,6 +60,8 @@ func FetchArtist(Id int) (model.Artist, error) {
 	return artist, nil
 }
 
+// helper function to get content of api content into required destination 
+// if err ocured error will be returned
 func Fetch(endpoint string, dest any) error {
 	urlResp, err := http.Get(config.Api_url + endpoint)
 	if err != nil {

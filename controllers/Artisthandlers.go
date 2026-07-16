@@ -10,6 +10,9 @@ import (
 	"strconv"
 )
 
+// HandleMain handler handle request for incoming root requst
+// validat path and request method
+// render parsed file for browser to display
 func HandleMain(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
 		RenderError(w, http.StatusNotFound, "Page Not Found")
@@ -26,10 +29,19 @@ func HandleMain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// HandleArtist is handler used to as response for an specific artist request.
+// it check the url path and the request method  and get the artist id form the query param.
+// Fetches all artist details if err error occur it call RenderError and returns
+// if successful, it display artist details using the parsed template
 func HandleArtist(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/artist" {
 		RenderError(w, http.StatusNotFound, "Page Not Found")
 		log.Println("404 page not found =>", r.URL.Path, "❌")
+		return
+	}
+
+	if r.Method != http.MethodGet {
+		RenderError(w, http.StatusMethodNotAllowed, "405 | Method Not Allowed: Use GET")
 		return
 	}
 	QueryParam := r.URL.Query()

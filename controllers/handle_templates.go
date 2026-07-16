@@ -6,9 +6,11 @@ import (
 	"log"
 	"net/http"
 )
-
+// global template to parse all template
 var Tmpl *template.Template
 
+// function to preload all template at before start of the server
+// to the global Template varaible and log if error occur
 func ParseTemplates() {
 	var err error
 	Tmpl, err = template.ParseGlob("templates/*.html")
@@ -18,6 +20,8 @@ func ParseTemplates() {
 	}
 }
 
+// RenderTemplate render a preloaded template with it data using Lookup method to get
+// specific template to be renderd and return any internal server error
 func RendersTemplates(w http.ResponseWriter, statuscode int, tmpl string, data any) error {
 	template := Tmpl.Lookup(tmpl)
 	if template == nil {

@@ -1,5 +1,6 @@
 package model
 
+// model to contain artist details
 type Artist struct {
 	ID           int      `json:"id"`
 	Image        string   `json:"image"`
@@ -44,6 +45,7 @@ type Relations struct {
 	Index []Relation
 }
 
+// model struccture to hold all fetched data 
 type CombinedData struct {
 	Artists   []Artist
 	Locations []Location

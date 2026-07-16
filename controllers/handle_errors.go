@@ -6,6 +6,8 @@ import (
 	"net/http"
 )
 
+// RenderError function render  error page by calling RenderTemplate and filling it
+// with the required data for the error page if any error occurs call http error and return
 func RenderError(w http.ResponseWriter, statuscode int, message string) {
 	err := RendersTemplates(w, statuscode, "error.html", model.Errors{
 		Status:  statuscode,
