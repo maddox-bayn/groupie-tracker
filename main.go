@@ -37,6 +37,7 @@ func main() {
 	// function preload and store each artist data in a map[int]model.Artist 
 	// for easy lookup of artist before system call
 	cu.BuildArtistIndex()
+	cu.BuildSearchIndex()
 
 	// handle request for static pages using constum handler
 	http.HandleFunc("/static/", cl.HandleStatic)

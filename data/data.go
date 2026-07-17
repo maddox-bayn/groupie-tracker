@@ -10,4 +10,5 @@ var (
 	Relations    model.Relations
 	CombinedData model.CombinedData
 	ArtistByID   map[int]model.Artist
+	SearchIndex []model.SearchEntry
 )

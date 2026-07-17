@@ -28,7 +28,7 @@ type Locations struct {
 }
 
 type Date struct {
-	ID   int      `json:"id"`
+	ID    int      `json:"id"`
 	Dates []string `json:"date"`
 }
 
@@ -45,10 +45,18 @@ type Relations struct {
 	Index []Relation
 }
 
-// model struccture to hold all fetched data 
+// model struccture to hold all fetched data
 type CombinedData struct {
 	Artists   []Artist
 	Locations []Location
 	Dates     []Date
 	Relations []Relation
+}
+
+// model to structure search entery
+type SearchEntry struct {
+	Text       string `json:"text"`
+	SearchText string
+	Type       string `json:"type"`
+	ArtistID   int    `json:"artistid"`
 }
