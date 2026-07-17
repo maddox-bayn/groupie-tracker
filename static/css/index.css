@@ -36,3 +36,64 @@ a { color: #1db954;
     box-shadow: 0 10px 20px rgba(29, 185, 84, 0.2); /* Adds a Spotify-green glow */
     cursor: pointer;
 }
+
+.search-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+}
+
+#search-bar {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    border-radius: 25px;
+    border: none;
+    background: #2a2a2a;
+    color: #fff;
+    outline: none;
+    box-sizing: border-box; /* Ensures padding doesn't widen the input */
+}
+
+#search-bar:focus {
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.5); /* Green glow on focus */
+}
+
+.suggestions-dropdown {
+    position: absolute;
+    top: 100%; /* Places it right below the input */
+    left: 0;
+    right: 0;
+    background: #1e1e1e;
+    border-radius: 8px;
+    margin-top: 5px;
+    padding: 0;
+    list-style: none;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    z-index: 1000; /* Ensures it stays on top of the cards */
+    display: none; /* Hidden by default */
+}
+
+.suggestions-dropdown li a {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid #333;
+}
+
+.suggestions-dropdown li a:hover {
+    background: #333;
+}
+
+.suggestion-text {
+    font-weight: bold;
+}
+
+.suggestion-type {
+    color: #1db954; /* Green type indicator */
+    font-size: 0.9rem;
+}

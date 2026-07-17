@@ -45,7 +45,7 @@ func BuildSearchIndex() {
 		data.SearchIndex = append(data.SearchIndex, model.SearchEntry{
 			Text:       artist.FirstAlbum,
 			SearchText: strings.ToLower(artist.FirstAlbum),
-			Type:       "firtsAbulm",
+			Type:       "firtsAlbum",
 			ArtistID:   artist.ID,
 		})
 

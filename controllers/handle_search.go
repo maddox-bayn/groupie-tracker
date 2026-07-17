@@ -31,7 +31,10 @@ func Search(w http.ResponseWriter, r *http.Request) {
 			results = append(results, entery)
 		}
 	}
+	if len(results) > 20 {
+		results = results[:20]
+	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w)
+	json.NewEncoder(w).Encode(results)
 }

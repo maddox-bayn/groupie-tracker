@@ -56,7 +56,7 @@ type CombinedData struct {
 // model to structure search entery
 type SearchEntry struct {
 	Text       string `json:"text"`
-	SearchText string
+	SearchText string `json:"-"`
 	Type       string `json:"type"`
-	ArtistID   int    `json:"artistid"`
+	ArtistID   int    `json:"artistID"`
 }

@@ -8,6 +8,10 @@
 </head>
 <body>
     <h1>Groupie Tracker Artists</h1>
+    <div class="search-container">
+        <input type="text" id="search-bar" placeholder="Search artists, members, locations..." autocomplete="off">
+        <ul id="suggestions-list" class="suggestions-dropdown"></ul>
+    </div>
     <div class="grid">
         {{range .Artists}}
         <a href="/artist?id={{.ID}}" class="card-link">
@@ -19,5 +23,6 @@
         </a>
         {{end}}
     </div>
+    <script src="/static/js/search.js"></script>
 </body>
 </html>
