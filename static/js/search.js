@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
             suggestionsList.style.display = "none";
             return;
         }
+        let debounceTimer;
+        searchBar.addEventListener("input", function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                // your existing fetch(...) logic goes here
+            }, 250);
+        });
+
 
         // 1. Send the GET request to your Go backend
         fetch(`/search?q=${encodeURIComponent(query)}`)
@@ -52,4 +60,4 @@ document.addEventListener("DOMContentLoaded", () => {
             suggestionsList.style.display = "none";
         }
     });
-});
+}); 

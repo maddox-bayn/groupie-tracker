@@ -9,8 +9,9 @@ import (
 	"log"
 	"net/http"
 )
-// init function to load or fetch data from all api endpoint 
-// before the the entry point of the program 
+
+// init function to load or fetch data from all api endpoint
+// before the the entry point of the program
 func init() {
 	var err error
 	data.CombinedData, err = cu.FtchAllData()
@@ -23,7 +24,7 @@ func init() {
 
 }
 
-// main entery point of the  program and caller  
+// main entery point of the  program and caller
 func main() {
 	// if data was not loaded at init call, try fetch it again
 	if len(data.CombinedData.Dates) == 0 {
@@ -34,7 +35,7 @@ func main() {
 			log.Fatalf("Error fetching data:%v", err)
 		}
 	}
-	// function preload and store each artist data in a map[int]model.Artist 
+	// function preload and store each artist data in a map[int]model.Artist
 	// for easy lookup of artist before system call
 	cu.BuildArtistIndex()
 	cu.BuildSearchIndex()
@@ -48,6 +49,6 @@ func main() {
 	http.HandleFunc("/artist", cl.HandleArtist)
 	http.HandleFunc("/search", cl.Search)
 	// starting server
-	fmt.Println("Starting server on http://localhost:8080")
+	fmt.Println("Starting server on http://localhost:8000")
 	log.Fatal(http.ListenAndServe(config.Port, nil))
 }

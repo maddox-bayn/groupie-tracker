@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// handler Seach fo r handling searchse for bat
 func Search(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/search" {
 		RenderError(w, http.StatusNotFound, "Request path not found")
@@ -19,7 +20,7 @@ func Search(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	query := strings.ToLower(r.URL.Query().Get("q"))
-	if query == "" {
+	if strings.TrimSpace(query) == "" {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode([]model.SearchEntry{})
 		return
