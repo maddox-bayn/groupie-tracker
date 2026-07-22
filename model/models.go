@@ -60,3 +60,13 @@ type SearchEntry struct {
 	Type       string `json:"type"`
 	ArtistID   int    `json:"artistID"`
 }
+
+type NominatingRsult struct {
+	Lat string `json:"lat"`
+	Lon string`json:"lon"`
+}
+
+type Coordinate struct {
+	Lat float64
+	Lng float64
+}
