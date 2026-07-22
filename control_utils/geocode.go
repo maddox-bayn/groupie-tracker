@@ -85,9 +85,9 @@ func Geocode(address string) (model.Coordinate, error) {
 	}
 
 	// save to cache and sleep
-	geoMutex.RLock()
+	geoMutex.Lock()
 	data.GeoCache[address]= coords
-	geoMutex.RUnlock()
+	geoMutex.Unlock()
 
 	time.Sleep(1 * time.Second)
 	return coords, nil
