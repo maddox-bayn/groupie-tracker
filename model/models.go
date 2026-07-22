@@ -18,9 +18,10 @@ type ArtistsPage struct {
 }
 
 type Location struct {
-	ID        int      `json:"id"`
-	Locations []string `json:"locations"`
-	DatesUrl  string   `json:"dates"`
+	ID        int                   `json:"id"`
+	Locations []string              `json:"locations"`
+	DatesUrl  string                `json:"dates"`
+	Coords    map[string]Coordinate `json:"coords"`
 }
 
 type Locations struct {
@@ -61,9 +62,9 @@ type SearchEntry struct {
 	ArtistID   int    `json:"artistID"`
 }
 
-type NominatingRsult struct {
+type NominatimResult struct {
 	Lat string `json:"lat"`
-	Lon string`json:"lon"`
+	Lon string `json:"lon"`
 }
 
 type Coordinate struct {

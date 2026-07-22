@@ -35,6 +35,9 @@ func main() {
 			log.Fatalf("Error fetching data:%v", err)
 		}
 	}
+
+	// start catche warming and the server does not need to wait
+	go cu.PreloadGeocodes()
 	// function preload and store each artist data in a map[int]model.Artist
 	// for easy lookup of artist before system call
 	cu.BuildArtistIndex()

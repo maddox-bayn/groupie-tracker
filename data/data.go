@@ -11,4 +11,5 @@ var (
 	CombinedData model.CombinedData
 	ArtistByID   map[int]model.Artist
 	SearchIndex []model.SearchEntry
+	GeoCache = make(map[string]model.Coordinate)
 )

@@ -5,6 +5,8 @@
     <title>{{.Name}} - Groupie Tracker</title>
     <link rel="stylesheet" href="/static/css/artist.css">
     <link rel="icon" type="image/svg+xml" href="static/css/favicon.svg" /> 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <div class="container">
@@ -46,8 +48,51 @@
                 </ul>
             </section>
         </main>
-        
+        <!-- The visual map container -->
+        <div id="map" style="height: 400px; width: 100%; border-radius: 12px; margin-top: 20px;"></div>
+
+        <!-- The hidden data store (Go template safe) -->
+        <div id="map-data" style="display: none;">
+            {{ range $name, $coord := .Location.Coords }}
+        <div class="map-marker" data-name="{{ $name }}" data-lat="{{ $coord.Lat }}" data-lng="{{ $coord.Lng }}"></div>
+            {{ end }}
+        </div>
         <a href="/" class="back-link">← Back to Artists</a>
     </div>
+    <script>
+    // Initialize map
+    var map = L.map('map').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    var bounds = L.latLngBounds();
+    var hasMarkers = false;
+
+    // Grab all the hidden marker divs we rendered with Go
+    var markerElements = document.querySelectorAll('.map-marker');
+
+    markerElements.forEach(function(el) {
+        // Read the data safely from HTML attributes
+        var name = el.getAttribute('data-name');
+        var lat = parseFloat(el.getAttribute('data-lat'));
+        var lng = parseFloat(el.getAttribute('data-lng'));
+
+        // Ensure the coordinates are valid numbers before plotting
+        if (!isNaN(lat) && !isNaN(lng)) {
+            var marker = L.marker([lat, lng]).addTo(map);
+            marker.bindPopup("<b>" + name + "</b>");
+            bounds.extend([lat, lng]);
+            hasMarkers = true;
+        }
+    });
+
+    // Auto-zoom to fit all pins
+    if (hasMarkers) {
+        map.fitBounds(bounds, { padding: [50, 50] });
+    } else {
+        console.log("No markers found to display.");
+    }
+</script>
 </body>
 </html>

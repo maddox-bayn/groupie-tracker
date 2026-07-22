@@ -8,6 +8,7 @@ import (
 	"groupie-tracker/data"
 	"groupie-tracker/model"
 	"net/http"
+	"strings"
 	"sync"
 )
 
@@ -22,7 +23,7 @@ func FtchAllData() (model.CombinedData, error) {
 		finalErr error
 	)
 
-	// helper function to fatch data cuncurrently 
+	// helper function to fatch data cuncurrently
 	fetchdata := func(endpoint string, dest any) {
 		defer wg.Done()
 		err := Fetch(endpoint, dest)
@@ -50,17 +51,27 @@ func FtchAllData() (model.CombinedData, error) {
 		Relations: data.Relations.Index,
 	}, nil
 }
-// FetchArtist return all artist detail using map look up 
+
+// FetchArtist return all artist detail using map look up
 // if data is not present it returns error  404
 func FetchArtist(Id int) (model.Artist, error) {
 	artist, found := data.ArtistByID[Id]
 	if !found {
 		return model.Artist{}, Err404
 	}
+	artist.Location.Coords = make(map[string]model.Coordinate)
+	for _, loc := range artist.Location.Locations {
+		cleanLoc := Totitle(strings.ReplaceAll(loc, "-", " "))
+		// Grab from your geocoder
+		coords, err := Geocode(cleanLoc)
+		if err == nil {
+			artist.Location.Coords[cleanLoc] = coords
+		}
+	}
 	return artist, nil
 }
 
-// helper function to get content of api content into required destination 
+// helper function to get content of api content into required destination
 // if err ocured error will be returned
 func Fetch(endpoint string, dest any) error {
 	urlResp, err := http.Get(config.Api_url + endpoint)
